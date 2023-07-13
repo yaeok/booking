@@ -8,9 +8,12 @@ import {
   Button,
   Flex,
   Heading,
+  List,
+  ListItem,
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -22,7 +25,7 @@ import Loading from '@/components/loading.component'
 export default function HomeScreen() {
   const [dateList, setDateList] = useState<string[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [bookingList, setBookingList] = useState<Booking[]>([])
+  const [bookingList, setBookingList] = useState<Booking[]>(DUMMY)
   const [bookingData, setBookingData] = useState<
     { bookingdate: string; timeList: number[] }[]
   >([])
@@ -38,10 +41,6 @@ export default function HomeScreen() {
         console.log(date.toDateString())
         setDateList((prev) => [...prev, format(date, 'yyyy/MM/dd')])
       }
-      setBookingList(DUMMY)
-      bookingList.forEach((booking) => {
-        console.log(booking)
-      })
 
       for (let i = 0; i < bookingList.length; i++) {
         const timeList = calculateTime(
@@ -86,18 +85,18 @@ export default function HomeScreen() {
                 <Td
                   fontSize='12'
                   key={index}
-                  cursor='pointer'
+                  cursor={true ? 'pointer' : 'not-allowed'}
                   onClick={() => console.log('押したよ')}
                 >
-                  {bookingData
-                    .find(
-                      (booking) =>
-                        booking.bookingdate === date &&
-                        booking.timeList.includes(time.id)
-                    )
-                    ?.timeList.includes(time.id) != null
-                    ? 'a'
-                    : 'b'}
+                  {bookingData.find(
+                    (booking) =>
+                      booking.bookingdate === date &&
+                      booking.timeList.includes(time.id)
+                  )?.bookingdate != null ? (
+                    <>予定あり</>
+                  ) : (
+                    <></>
+                  )}
                 </Td>
               ))}
             </Tr>
